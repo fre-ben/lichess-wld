@@ -1,0 +1,75 @@
+/*
+  1. Use a more-intuitive box-sizing model.
+*/
+#crx-wld-root *,
+#crx-wld-root *::before,
+#crx-wld-root *::after {
+  box-sizing: border-box;
+}
+
+/*
+    2. Remove default margin
+  */
+#crx-wld-root * {
+  margin: 0;
+}
+
+/*
+    3. Allow percentage-based heights in the application
+  */
+#crx-wld-root html,
+#crx-wld-root body {
+  height: 100%;
+}
+
+/*
+    Typographic tweaks!
+    4. Add accessible line-height
+    5. Improve text rendering
+  */
+#crx-wld-root body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+    6. Improve media defaults
+  */
+#crx-wld-root img,
+#crx-wld-root picture,
+#crx-wld-root video,
+#crx-wld-root canvas,
+#crx-wld-root svg {
+  display: block;
+  max-width: 100%;
+}
+
+/*
+    7. Remove built-in form typography styles
+  */
+#crx-wld-root input,
+#crx-wld-root button,
+#crx-wld-root textarea,
+#crx-wld-root select {
+  font: inherit;
+}
+
+/*
+    8. Avoid text overflows
+  */
+#crx-wld-root p,
+#crx-wld-root h1,
+#crx-wld-root h2,
+#crx-wld-root h3,
+#crx-wld-root h4,
+#crx-wld-root h5,
+#crx-wld-root h6 {
+  overflow-wrap: break-word;
+}
+
+/*
+    9. Create a root stacking context
+  */
+#crx-wld-root {
+  isolation: isolate;
+}
