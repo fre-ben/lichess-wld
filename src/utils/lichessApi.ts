@@ -1,8 +1,13 @@
+import type { Game, WLDStats } from "../types/lichess";
+
 export function getPastTimestamp(hours: number): number {
   return Date.now() - hours * 3600 * 1000;
 }
 
-export async function getGames(userName: string, since: number) {
+export async function getGames(
+  userName: string,
+  since: number
+): Promise<Game[] | undefined> {
   const headers = {
     Accept: "application/x-ndjson",
   };
@@ -20,7 +25,44 @@ export async function getGames(userName: string, since: number) {
     .match(/.+/g)
     ?.map((game) => JSON.parse(game));
 
-  return games;
+  const cleanedGames: Game[] | undefined = games?.map((game) => {
+    return {
+      players: {
+        white: game.players.white.user.name,
+        black: game.players.black.user.name,
+      },
+      status: game.status,
+      winner: game.winner,
+    };
+  });
+
+  return cleanedGames;
+}
+
+function calculateWLDStats(games: Game[], userName: string): WLDStats {
+  let wins = 0;
+  let losses = 0;
+  let draws = 0;
+
+  games.forEach((game) => {
+    const userColor =
+      game.players.white.toLocaleLowerCase() === userName.toLocaleLowerCase()
+        ? "white"
+        : "black";
+
+    if (game.status === "draw") {
+      draws++;
+      return;
+    } else if (game.winner === userColor) {
+      wins++;
+      return;
+    } else {
+      losses++;
+      return;
+    }
+  });
+
+  return { wins, losses, draws };
 }
 
 export async function getCurrentGame() {
