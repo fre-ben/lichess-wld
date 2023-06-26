@@ -37,3 +37,5 @@ export type PerfType =
   | "kingOfTheHill"
   | "racingKings"
   | "threeCheck";
+
+export type BoardOrientation = "white" | "black";

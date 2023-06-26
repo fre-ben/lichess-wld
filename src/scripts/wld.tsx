@@ -8,44 +8,83 @@ import {
   getGames,
   getPastTimestamp,
 } from "../utils/lichessApi";
+import {
+  getBoardOrientation,
+  getPlayerDOMElement,
+  injectReactRootIntoDOM,
+} from "../utils/dom";
 
-// Create root element for React element to be inserted into the DOM
-const bottomRoot = document.createElement("div");
-bottomRoot.id = "crx-wld-root-bottom";
-const topRoot = document.createElement("div");
-topRoot.id = "crx-wld-root-top";
+// TODO: Funktion refactoren, dass jeweils alle Schritte nur für eine Farbe durchgegangen werden, dann die Funktion für jede Farbe ausführen lassen
+async function createWLDStats() {
+  const currentGame = await getCurrentGameById();
+  console.log({ currentGame });
 
-const userBottomElement = document.querySelector(".ruser-bottom");
-const userTopElement = document.querySelector(".ruser-top");
-userBottomElement?.insertBefore(bottomRoot, userBottomElement.childNodes[2]);
-userTopElement?.insertBefore(topRoot, userTopElement.childNodes[2]);
+  if (!currentGame) {
+    return null;
+  }
 
-const currentGame = await getCurrentGameById();
-console.log({ currentGame });
+  const playerBlackDOM = getPlayerDOMElement(currentGame.players.black);
+  const playerWhiteDOM = getPlayerDOMElement(currentGame.players.white);
 
-// TODO: ANhand von currentGame für beide Spieler WLD holen und an die richtige Stelle im DOM setzen
+  const blackRoot = injectReactRootIntoDOM(
+    playerBlackDOM,
+    "crx-wld-root-black"
+  );
+  const whiteRoot = injectReactRootIntoDOM(
+    playerWhiteDOM,
+    "crx-wld-root-white"
+  );
 
-const games = await getGames(
-  "SchachMannVomBrett",
-  getPastTimestamp(72),
-  true,
-  "rapid"
-);
+  // TODO: Hiermit arbeiten, hook bauen die abfragt ob die Orientation geändert wurde und dann erneut die WLD Stats rendert, im besten Fall ohne erneuten API Call
+  const boardOrientation = getBoardOrientation();
 
-const bottomStats = calculateWLDStats(games, "SchachMannVomBrett");
+  const pastGamesBlack = await getGames(
+    currentGame.players.black,
+    getPastTimestamp(72),
+    true,
+    "rapid"
+  );
 
-ReactDOM.createRoot(bottomRoot).render(
-  <React.StrictMode>
-    <Stats
-      wins={bottomStats.wins}
-      losses={bottomStats.losses}
-      draws={bottomStats.draws}
-    />
-  </React.StrictMode>
-);
+  const pastGamesWhite = await getGames(
+    currentGame.players.white,
+    getPastTimestamp(72),
+    true,
+    "rapid"
+  );
 
-ReactDOM.createRoot(topRoot).render(
-  <React.StrictMode>
-    <Stats wins={6} losses={6} draws={6} />
-  </React.StrictMode>
-);
+  if (pastGamesBlack) {
+    const blackWLDStats = calculateWLDStats(
+      pastGamesBlack,
+      currentGame.players.black
+    );
+
+    ReactDOM.createRoot(blackRoot).render(
+      <React.StrictMode>
+        <Stats
+          wins={blackWLDStats.wins}
+          losses={blackWLDStats.losses}
+          draws={blackWLDStats.draws}
+        />
+      </React.StrictMode>
+    );
+  }
+
+  if (pastGamesWhite) {
+    const whiteWLDStats = calculateWLDStats(
+      pastGamesWhite,
+      currentGame.players.white
+    );
+
+    ReactDOM.createRoot(whiteRoot).render(
+      <React.StrictMode>
+        <Stats
+          wins={whiteWLDStats.wins}
+          losses={whiteWLDStats.losses}
+          draws={whiteWLDStats.draws}
+        />
+      </React.StrictMode>
+    );
+  }
+}
+
+await createWLDStats();

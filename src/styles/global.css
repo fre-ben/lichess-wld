@@ -1,30 +1,30 @@
 /*
   1. Use a more-intuitive box-sizing model.
 */
-#crx-wld-root-bottom,
-#crx-wld-root-top > *,
-#crx-wld-root-bottom,
-#crx-wld-root-top > *::before,
-#crx-wld-root-bottom,
-#crx-wld-root-top > *::after {
+#crx-wld-root-black,
+#crx-wld-root-white > *,
+#crx-wld-root-black,
+#crx-wld-root-white > *::before,
+#crx-wld-root-black,
+#crx-wld-root-white > *::after {
   box-sizing: border-box;
 }
 
 /*
     2. Remove default margin
   */
-#crx-wld-root-bottom,
-#crx-wld-root-top > * {
+#crx-wld-root-black,
+#crx-wld-root-white > * {
   margin: 0;
 }
 
 /*
     3. Allow percentage-based heights in the application
   */
-#crx-wld-root-bottom,
-#crx-wld-root-top > html,
-#crx-wld-root-bottom,
-#crx-wld-root-top > body {
+#crx-wld-root-black,
+#crx-wld-root-white > html,
+#crx-wld-root-black,
+#crx-wld-root-white > body {
   height: 100%;
 }
 
@@ -33,8 +33,8 @@
     4. Add accessible line-height
     5. Improve text rendering
   */
-#crx-wld-root-bottom,
-#crx-wld-root-top > body {
+#crx-wld-root-black,
+#crx-wld-root-white > body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -42,16 +42,16 @@
 /*
     6. Improve media defaults
   */
-#crx-wld-root-bottom,
-#crx-wld-root-top > img,
-#crx-wld-root-bottom,
-#crx-wld-root-top > picture,
-#crx-wld-root-bottom,
-#crx-wld-root-top > video,
-#crx-wld-root-bottom,
-#crx-wld-root-top > canvas,
-#crx-wld-root-bottom,
-#crx-wld-root-top > svg {
+#crx-wld-root-black,
+#crx-wld-root-white > img,
+#crx-wld-root-black,
+#crx-wld-root-white > picture,
+#crx-wld-root-black,
+#crx-wld-root-white > video,
+#crx-wld-root-black,
+#crx-wld-root-white > canvas,
+#crx-wld-root-black,
+#crx-wld-root-white > svg {
   display: block;
   max-width: 100%;
 }
@@ -59,41 +59,41 @@
 /*
     7. Remove built-in form typography styles
   */
-#crx-wld-root-bottom,
-#crx-wld-root-top > input,
-#crx-wld-root-bottom,
-#crx-wld-root-top > button,
-#crx-wld-root-bottom,
-#crx-wld-root-top > textarea,
-#crx-wld-root-bottom,
-#crx-wld-root-top > select {
+#crx-wld-root-black,
+#crx-wld-root-white > input,
+#crx-wld-root-black,
+#crx-wld-root-white > button,
+#crx-wld-root-black,
+#crx-wld-root-white > textarea,
+#crx-wld-root-black,
+#crx-wld-root-white > select {
   font: inherit;
 }
 
 /*
     8. Avoid text overflows
   */
-#crx-wld-root-bottom,
-#crx-wld-root-top > p,
-#crx-wld-root-bottom,
-#crx-wld-root-top > h1,
-#crx-wld-root-bottom,
-#crx-wld-root-top > h2,
-#crx-wld-root-bottom,
-#crx-wld-root-top > h3,
-#crx-wld-root-bottom,
-#crx-wld-root-top > h4,
-#crx-wld-root-bottom,
-#crx-wld-root-top > h5,
-#crx-wld-root-bottom,
-#crx-wld-root-top > h6 {
+#crx-wld-root-black,
+#crx-wld-root-white > p,
+#crx-wld-root-black,
+#crx-wld-root-white > h1,
+#crx-wld-root-black,
+#crx-wld-root-white > h2,
+#crx-wld-root-black,
+#crx-wld-root-white > h3,
+#crx-wld-root-black,
+#crx-wld-root-white > h4,
+#crx-wld-root-black,
+#crx-wld-root-white > h5,
+#crx-wld-root-black,
+#crx-wld-root-white > h6 {
   overflow-wrap: break-word;
 }
 
 /*
     9. Create a root stacking context
   */
-#crx-wld-root-bottom,
-#crx-wld-root-top {
+#crx-wld-root-black,
+#crx-wld-root-white {
   isolation: isolate;
 }

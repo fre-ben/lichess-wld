@@ -16,31 +16,38 @@ export async function getGames(
   rated: boolean,
   perfType?: PerfType
 ): Promise<Game[] | undefined> {
-  const response = await fetch(
-    `${APIROUTE}/games/user/${userName}?since=${since}&rated=${rated}&perfType=${perfType}`,
-    {
-      method: "GET",
-      headers: HEADERS,
-    }
-  );
+  try {
+    const response = await fetch(
+      `${APIROUTE}/games/user/${userName}?since=${since}&rated=${rated}&perfType=${perfType}`,
+      {
+        method: "GET",
+        headers: HEADERS,
+      }
+    );
 
-  // parse x-ndjson response
-  const games = (await response.text())
-    .match(/.+/g)
-    ?.map((game) => JSON.parse(game));
+    // parse x-ndjson response
+    const games = (await response.text())
+      .match(/.+/g)
+      ?.map((game) => JSON.parse(game));
 
-  const cleanedGames: Game[] | undefined = games?.map((game) => {
-    return {
-      players: {
-        white: game.players.white.user ? game.players.white.user.name : "AI",
-        black: game.players.black.user ? game.players.black.user.name : "AI",
-      },
-      status: game.status,
-      winner: game.winner,
-    };
-  });
+    const cleanedGames: Game[] | undefined = games?.map((game) => {
+      return {
+        players: {
+          white: game.players.white.user ? game.players.white.user.name : "AI",
+          black: game.players.black.user ? game.players.black.user.name : "AI",
+        },
+        status: game.status,
+        winner: game.winner,
+      };
+    });
 
-  return cleanedGames;
+    return cleanedGames;
+  } catch (err) {
+    console.error(
+      `Lichess WLD: Error ocurred while fetching data for user: ${userName}`
+    );
+    return undefined;
+  }
 }
 
 export function calculateWLDStats(
@@ -69,6 +76,7 @@ export function calculateWLDStats(
   return { wins, losses, draws };
 }
 
+// TODO: in try/catch Block packen mit aussagekräftigem Error-log
 export async function getCurrentGameById(): Promise<CurrentGame | undefined> {
   const gameID = window.location.href.split("/")[3];
   const response = await fetch(`${APIROUTE}/games/export/_ids`, {
