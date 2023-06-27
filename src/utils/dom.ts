@@ -1,5 +1,9 @@
 import type { BoardOrientation } from "../types/lichess";
 
+/**
+ * Gets the current orientation of the board. The return value is the color which is at the bottom of the board.
+ * @returns {string} "black" or "white"
+ */
 export function getBoardOrientation(): BoardOrientation {
   if (document.querySelector(".orientation-black")) {
     return "black";
@@ -8,6 +12,11 @@ export function getBoardOrientation(): BoardOrientation {
   }
 }
 
+/**
+ * Gets the DOM element where the user name is located.
+ * @param {string} userName
+ * @returns {Element}
+ */
 export function getPlayerDOMElement(userName: string): Element {
   const linkElements = Array.from(document.querySelectorAll("a"));
   const nameElements = Array.from(document.querySelectorAll("name"));

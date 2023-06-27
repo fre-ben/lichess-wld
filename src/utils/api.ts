@@ -25,10 +25,7 @@ export async function getGames(
       }
     );
 
-    // parse x-ndjson response
-    const games = (await response.text())
-      .match(/.+/g)
-      ?.map((game) => JSON.parse(game));
+    const games = await parseXNDJSON(response);
 
     const cleanedGames: Game[] | undefined = games?.map((game) => {
       return {
@@ -44,7 +41,7 @@ export async function getGames(
     return cleanedGames;
   } catch (err) {
     console.error(
-      `Lichess WLD: Error ocurred while fetching data for user: ${userName}`
+      `Lichess WLD: Error ocurred while fetching data for user: ${userName} - ${err}`
     );
     return undefined;
   }
@@ -76,36 +73,45 @@ export function calculateWLDStats(
   return { wins, losses, draws };
 }
 
-// TODO: in try/catch Block packen mit aussagekräftigem Error-log
 export async function getCurrentGameById(): Promise<CurrentGame | undefined> {
-  const gameID = window.location.href.split("/")[3];
-  const response = await fetch(`${APIROUTE}/games/export/_ids`, {
-    method: "POST",
-    headers: HEADERS,
-    // Limiting the string to 8 characters is required, since navigating away from a game and returning adds characters to the pathname, which results in an invalid gameID
-    body: gameID.slice(0, 8),
-  });
+  try {
+    const gameID = window.location.href.split("/")[3];
+    const response = await fetch(`${APIROUTE}/games/export/_ids`, {
+      method: "POST",
+      headers: HEADERS,
+      // Limiting the string to 8 characters is required, since navigating away from a game and returning adds characters to the pathname, which results in an invalid gameID
+      body: gameID.slice(0, 8),
+    });
 
-  // parse x-ndjson response
-  const currentGame = (await response.text())
-    .match(/.+/g)
-    ?.map((game) => JSON.parse(game))[0];
+    const parsedGame = await parseXNDJSON(response);
 
-  const cleanedCurrentGame: CurrentGame = {
-    id: currentGame.id,
-    players: {
-      white: currentGame.players.white.user
-        ? currentGame.players.white.user.name
-        : "AI",
-      black: currentGame.players.black.user
-        ? currentGame.players.black.user.name
-        : "AI",
-    },
-    perfType: currentGame.perf,
-    rated: currentGame.rated,
-  };
+    if (!parsedGame) {
+      return;
+    }
 
-  return cleanedCurrentGame;
+    const currentGame = parsedGame[0];
+
+    const cleanedCurrentGame: CurrentGame = {
+      id: currentGame.id,
+      players: {
+        white: currentGame.players.white.user
+          ? currentGame.players.white.user.name
+          : "AI",
+        black: currentGame.players.black.user
+          ? currentGame.players.black.user.name
+          : "AI",
+      },
+      perfType: currentGame.perf,
+      rated: currentGame.rated,
+    };
+
+    return cleanedCurrentGame;
+  } catch (err) {
+    console.error(`Lichess WLD: Error getting data for current game - ${err}`);
+    return undefined;
+  }
 }
 
-// TODO: x-ndjson parser als util Funktion auslagern
+async function parseXNDJSON(response: Response) {
+  return (await response.text()).match(/.+/g)?.map((any) => JSON.parse(any));
+}
