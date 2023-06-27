@@ -45,7 +45,7 @@ async function renderWLDStats(
 
   const pastGames = await getGames(
     currentGame.players[color],
-    getPastTimestamp(72),
+    getPastTimestamp(12),
     true,
     currentGame.perfType
   );

@@ -1,0 +1,20 @@
+/* Todo: styled-components nutzen  */
+.stats {
+  color: #999;
+}
+
+.stats > span {
+  font-weight: bold;
+}
+
+.wins {
+  color: #629924;
+}
+
+.losses {
+  color: #c33;
+}
+
+.draws {
+  color: #bf811d;
+}
