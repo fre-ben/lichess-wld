@@ -63,6 +63,8 @@ export function calculateWLDStats(
 
     if (game.status === "draw") {
       draws++;
+    } else if (game.status === "stalemate") {
+      draws++;
     } else if (game.winner === userColor) {
       wins++;
     } else {
