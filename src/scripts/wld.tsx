@@ -36,6 +36,10 @@ async function renderWLDStats(
   color: "black" | "white",
   currentGame: CurrentGame
 ) {
+  if (currentGame.players[color] === "AI") {
+    return;
+  }
+
   const playerDOM = getPlayerDOMElement(currentGame.players[color]);
 
   const playerRoot = injectReactRootIntoDOM(
