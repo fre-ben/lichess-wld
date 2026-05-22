@@ -23,6 +23,19 @@
   color: #999;
 }
 
+.wld-loading {
+  color: #888;
+  font-size: 0.85em;
+  margin-left: 2px;
+  display: inline-block;
+  animation: wld-spin 1s linear infinite;
+}
+
+@keyframes wld-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 body.dark .wld-stats {
   color: #bbb;
 }
@@ -41,4 +54,8 @@ body.dark .wld-draws {
 
 body.dark .wld-winrate {
   color: #bbb;
+}
+
+body.dark .wld-loading {
+  color: #aaa;
 }

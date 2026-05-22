@@ -7,4 +7,7 @@ export default defineConfig({
   vite: () => ({
     plugins: [react()],
   }),
+  manifest: {
+    permissions: ["storage"],
+  },
 });
