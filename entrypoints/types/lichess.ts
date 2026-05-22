@@ -1,3 +1,8 @@
+export interface Players {
+  white: string;
+  black: string;
+}
+
 export interface Game {
   players: Players;
   status: string;
@@ -6,7 +11,7 @@ export interface Game {
 
 export interface CurrentGame {
   id: string;
-  players: Players;
+  players: { white: string; black: string };
   perfType: PerfType;
   rated: boolean;
 }
@@ -15,11 +20,7 @@ export interface WLDStats {
   wins: number;
   losses: number;
   draws: number;
-}
-
-export interface Players {
-  white: string;
-  black: string;
+  winRate: number;
 }
 
 export type PerfType =
