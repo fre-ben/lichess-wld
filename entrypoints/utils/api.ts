@@ -14,7 +14,7 @@ export async function getGames(
   userName: string,
   since: number,
   rated: boolean,
-  perfType?: PerfType
+  perfType?: PerfType,
 ): Promise<Game[] | undefined> {
   try {
     const response = await fetch(
@@ -22,7 +22,7 @@ export async function getGames(
       {
         method: "GET",
         headers: HEADERS,
-      }
+      },
     );
 
     const games = await parseXNDJSON(response);
@@ -41,7 +41,7 @@ export async function getGames(
     return cleanedGames;
   } catch (err) {
     console.error(
-      `Lichess WLD: Error ocurred while fetching data for user: ${userName} - ${err}`
+      `Lichess WLD: Error ocurred while fetching data for user: ${userName} - ${err}`,
     );
     return undefined;
   }
@@ -49,15 +49,19 @@ export async function getGames(
 
 export function calculateWLDStats(
   games: Game[] | undefined,
-  userName: string
+  userName: string,
 ): WLDStats {
   let wins = 0;
   let losses = 0;
   let draws = 0;
 
-  games?.forEach((game) => {
+  if (!games || games.length === 0) {
+    return { wins: 0, losses: 0, draws: 0, winRate: 0 };
+  }
+
+  games.forEach((game) => {
     const userColor =
-      game.players.white.toLocaleLowerCase() === userName.toLocaleLowerCase()
+      game.players.white.toLowerCase() === userName.toLowerCase()
         ? "white"
         : "black";
 
@@ -72,7 +76,10 @@ export function calculateWLDStats(
     }
   });
 
-  return { wins, losses, draws };
+  const totalGames = wins + losses + draws;
+  const winRate = totalGames > 0 ? Math.round((wins / totalGames) * 100) : 0;
+
+  return { wins, losses, draws, winRate };
 }
 
 export async function getCurrentGameById(): Promise<CurrentGame | undefined> {
@@ -115,5 +122,8 @@ export async function getCurrentGameById(): Promise<CurrentGame | undefined> {
 }
 
 async function parseXNDJSON(response: Response) {
-  return (await response.text()).match(/.+/g)?.map((any) => JSON.parse(any));
+  return (await response.text())
+    .split("\n")
+    .filter(Boolean)
+    .map((line) => JSON.parse(line));
 }

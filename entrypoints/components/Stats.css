@@ -1,0 +1,44 @@
+.wld-stats {
+  color: #999;
+  font-size: 0.9em;
+}
+
+.wld-stats > span {
+  font-weight: bold;
+}
+
+.wld-wins {
+  color: hsl(88, 62%, 37%);
+}
+
+.wld-losses {
+  color: hsl(0, 60%, 50%);
+}
+
+.wld-draws {
+  color: hsl(37, 74%, 48%);
+}
+
+.wld-winrate {
+  color: #999;
+}
+
+body.dark .wld-stats {
+  color: #bbb;
+}
+
+body.dark .wld-wins {
+  color: hsl(88, 62%, 37%);
+}
+
+body.dark .wld-losses {
+  color: hsl(0, 60%, 50%);
+}
+
+body.dark .wld-draws {
+  color: hsl(37, 74%, 43%);
+}
+
+body.dark .wld-winrate {
+  color: #bbb;
+}
